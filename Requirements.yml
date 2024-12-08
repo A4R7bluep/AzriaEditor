@@ -1,0 +1,8 @@
+Must haves:
+- syntax formatting
+- syntax highlighting
+- run/compile code
+- CTRL + j,k,l,; move cursor
+- CTRL + ALT + J,K,L,; move cursor to beginning or end of paragraph, or line
+- CTRL + SHIFT + J,K,L,; select while moving cursor
+- save, copy, paste shortcuts

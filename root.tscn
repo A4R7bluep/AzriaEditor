@@ -1,0 +1,100 @@
+[gd_scene load_steps=6 format=3 uid="uid://bjcvrbhf5mg7e"]
+
+[ext_resource type="Script" path="res://root.gd" id="1_io7tx"]
+[ext_resource type="FontFile" uid="uid://dg0kdb1patb8t" path="res://fonts/Ubuntu_Mono/UbuntuMono-Regular.ttf" id="2_qauyc"]
+[ext_resource type="FontFile" uid="uid://b06ipbcnjy6e6" path="res://fonts/Ubuntu_Mono/UbuntuMono-BoldItalic.ttf" id="3_u7trg"]
+
+[sub_resource type="Theme" id="Theme_a5er8"]
+default_font = ExtResource("2_qauyc")
+default_font_size = 18
+
+[sub_resource type="CodeHighlighter" id="CodeHighlighter_2y6u1"]
+number_color = Color(0.517647, 0, 0, 1)
+symbol_color = Color(0, 0.509804, 0, 1)
+function_color = Color(0, 0, 0.458824, 1)
+member_variable_color = Color(1, 0, 1, 1)
+keyword_colors = {
+"include": Color(1, 1, 0, 1)
+}
+
+[node name="Root" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_a5er8")
+script = ExtResource("1_io7tx")
+
+[node name="BoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="BoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="RichTextLabel" type="RichTextLabel" parent="BoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(0, 20)
+layout_direction = 1
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 30.0
+theme_override_fonts/normal_font = ExtResource("3_u7trg")
+theme_override_font_sizes/normal_font_size = 25
+bbcode_enabled = true
+text = "[center]FILE NAME[/center]"
+fit_content = true
+scroll_active = false
+shortcut_keys_enabled = false
+
+[node name="Close" type="Button" parent="BoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "X"
+
+[node name="CodeEdit" type="CodeEdit" parent="BoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 20.0
+context_menu_enabled = false
+wrap_mode = 1
+scroll_smooth = true
+scroll_past_end_of_file = true
+minimap_draw = true
+caret_mid_grapheme = true
+syntax_highlighter = SubResource("CodeHighlighter_2y6u1")
+highlight_all_occurrences = true
+highlight_current_line = true
+gutters_draw_breakpoints_gutter = true
+gutters_draw_bookmarks = true
+gutters_draw_executing_lines = true
+gutters_draw_line_numbers = true
+gutters_zero_pad_line_numbers = true
+gutters_draw_fold_gutter = true
+code_completion_enabled = true
+indent_use_spaces = true
+indent_automatic = true
+auto_brace_completion_enabled = true
+auto_brace_completion_highlight_matching = true
+
+[node name="FileDialog" type="FileDialog" parent="."]
+title = "Open a File"
+size = Vector2i(496, 175)
+force_native = true
+ok_button_text = "Open"
+file_mode = 0
+access = 2
+show_hidden_files = true
+use_native_dialog = true
+
+[node name="Timer" type="Timer" parent="."]
+
+[connection signal="pressed" from="BoxContainer/HBoxContainer/Close" to="." method="_on_close_pressed"]
+[connection signal="file_selected" from="FileDialog" to="." method="_on_file_dialog_file_selected"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
