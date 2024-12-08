@@ -4,10 +4,21 @@ extends Control
 @onready var richLabel = $BoxContainer/HBoxContainer/RichTextLabel
 @onready var codeEdit = $BoxContainer/CodeEdit
 @onready var timer = $Timer
+@onready var help = $CanvasLayer
+@onready var shortcutShow = $CanvasLayer/ShortcutPanel/MarginContainer/ShortcutShow
 
 var filePath = ""
 
 func _ready() -> void:
+	if FileAccess.file_exists("user://azria_editor.conf"):
+		var confFile = FileAccess.open("user://azria_editor.conf", FileAccess.READ)
+		var json = JSON.new()
+		var parseResult = json.parse(confFile.get_line())
+		if parseResult == OK:
+			var showHelp : bool = json.data["OpenShortcutOnStartup"]
+			shortcutShow.button_pressed = showHelp
+			help.visible = !showHelp
+	
 	fileDialog.visible = true
 
 func _on_file_dialog_file_selected(path: String) -> void:
@@ -82,10 +93,14 @@ func _process(_delta: float) -> void:
 		var endParaLine = find_para_end(currentLine)
 		codeEdit.set_caret_line(endParaLine)
 		codeEdit.set_caret_column(codeEdit.get_first_non_whitespace_column(endParaLine))
+	
+	if Input.is_action_just_pressed("help"):
+		var currentCol = codeEdit.get_caret_column()
+		var currentLine = codeEdit.get_caret_line()
+		codeEdit.remove_text(currentLine, max(currentCol - 1, 0), currentLine, currentCol)
+		
+		help.visible = not help.visible
 
-
-func _on_timer_timeout() -> void:
-	richLabel.text = "[center]%s[/center]" % filePath
 
 func find_para_beginning(caretLine):
 	var fileRead = FileAccess.open(filePath, FileAccess.READ)
@@ -107,3 +122,16 @@ func find_para_end(caretLine):
 			return i - 1
 	
 	return lines.size() - 1
+
+func _on_shortcut_default_show_toggled(toggled_on: bool) -> void:
+	# only allows this to be saved
+	var confFile = FileAccess.open("user://azria_editor.conf", FileAccess.WRITE)
+	if confFile != null:
+		var jsonString = JSON.stringify({"OpenShortcutOnStartup": toggled_on})
+		confFile.store_line(jsonString)
+		confFile.close()
+	else:
+		print(FileAccess.get_open_error())
+
+func _on_timer_timeout() -> void:
+	richLabel.text = "[center]%s[/center]" % filePath
