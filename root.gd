@@ -3,7 +3,7 @@ extends Control
 @onready var fileDialog = $FileDialog
 @onready var richLabel = $BoxContainer/HBoxContainer/RichTextLabel
 @onready var codeEdit = $BoxContainer/CodeEdit
-@onready var timer = $SaveTimer
+@onready var timer = $Timer
 @onready var help = $CanvasLayer
 @onready var shortcutShow = $CanvasLayer/ShortcutPanel/MarginContainer/ShortcutShow
 
@@ -52,6 +52,16 @@ func _process(_delta: float) -> void:
 	
 	elif Input.is_action_just_pressed("file_open"):
 		fileDialog.visible = true
+	
+	elif Input.is_action_just_pressed("run_code"):
+		var exe = OS.execute_with_pipe("gcc", [filePath, "-o", filePath.split(".")[0]])
+		
+		print("IO: " + exe["stdio"].get_as_text())
+		print("ERR: " + exe["stderr"].get_as_text())
+		print("PID: " + str(exe["pid"]))
+		
+		richLabel.text = "[center]%s - executed[/center]" % filePath
+		timer.start(5)
 	
 	elif Input.is_action_just_pressed("select_left"):
 		var selectCol = codeEdit.get_selection_to_column()

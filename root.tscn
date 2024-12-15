@@ -100,7 +100,7 @@ access = 2
 show_hidden_files = true
 use_native_dialog = true
 
-[node name="SaveTimer" type="Timer" parent="."]
+[node name="Timer" type="Timer" parent="."]
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 visible = false
@@ -134,7 +134,10 @@ Move Cursor to End of Line: CTRL + ALT + ;
 Move Cursor to Beginning of Paragraph: CTRL + ALT + K
 Move Cursor to End of Paragraph: CTRL + ALT + L
 
-(Add Select Text)
+Select Text to the Left: CTRL + SHIFT + J
+Select Text to the Right: CTRL + SHIFT + ;
+Select Text to Above Line: CTRL + SHIFT + K
+Select Text to Below Line: CTRL + SHIFT + L
 
 Toggle Shortcut View: CTRL + /"
 label_settings = SubResource("LabelSettings_ybxfr")
@@ -149,5 +152,5 @@ text = "Don't see this on startup"
 
 [connection signal="pressed" from="BoxContainer/HBoxContainer/Close" to="." method="_on_close_pressed"]
 [connection signal="file_selected" from="FileDialog" to="." method="_on_file_dialog_file_selected"]
-[connection signal="timeout" from="SaveTimer" to="." method="_on_timer_timeout"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
 [connection signal="toggled" from="CanvasLayer/ShortcutPanel/MarginContainer/ShortcutShow" to="." method="_on_shortcut_default_show_toggled"]
