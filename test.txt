@@ -1,6 +1,7 @@
 this is text
 and more text
-and some code
+
+and some code:
     
 int main(int argc, char* argv[])
 {

@@ -68,10 +68,12 @@ layout_mode = 2
 size_flags_vertical = 3
 size_flags_stretch_ratio = 20.0
 context_menu_enabled = false
+shortcut_keys_enabled = false
 wrap_mode = 1
 scroll_smooth = true
 scroll_past_end_of_file = true
 minimap_draw = true
+caret_draw_when_editable_disabled = true
 caret_mid_grapheme = true
 syntax_highlighter = SubResource("CodeHighlighter_2y6u1")
 highlight_all_occurrences = true
@@ -98,9 +100,10 @@ access = 2
 show_hidden_files = true
 use_native_dialog = true
 
-[node name="Timer" type="Timer" parent="."]
+[node name="SaveTimer" type="Timer" parent="."]
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
+visible = false
 
 [node name="ShortcutPanel" type="Panel" parent="CanvasLayer"]
 anchors_preset = 15
@@ -146,5 +149,5 @@ text = "Don't see this on startup"
 
 [connection signal="pressed" from="BoxContainer/HBoxContainer/Close" to="." method="_on_close_pressed"]
 [connection signal="file_selected" from="FileDialog" to="." method="_on_file_dialog_file_selected"]
-[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
+[connection signal="timeout" from="SaveTimer" to="." method="_on_timer_timeout"]
 [connection signal="toggled" from="CanvasLayer/ShortcutPanel/MarginContainer/ShortcutShow" to="." method="_on_shortcut_default_show_toggled"]
