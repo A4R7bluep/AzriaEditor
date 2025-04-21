@@ -1,0 +1,12 @@
+[gd_resource type="CodeHighlighter" format=3 uid="uid://dy3rfech68pn2"]
+
+[resource]
+number_color = Color(0.627451, 1, 0.878431, 1)
+symbol_color = Color(0.670588, 0.788235, 1, 1)
+function_color = Color(0.4, 0.898039, 1, 1)
+color_regions = {
+"\" \"": Color(1, 0.929412, 0.580392, 1),
+"' '": Color(1, 0.929412, 0.580392, 1),
+"/* */": Color(0, 1, 0, 1),
+"//": Color(0, 1, 0, 1)
+}

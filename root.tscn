@@ -1,22 +1,15 @@
-[gd_scene load_steps=8 format=3 uid="uid://bjcvrbhf5mg7e"]
+[gd_scene load_steps=9 format=3 uid="uid://bjcvrbhf5mg7e"]
 
-[ext_resource type="Script" path="res://root.gd" id="1_io7tx"]
+[ext_resource type="Script" uid="uid://kvkgqhou1s31" path="res://root.gd" id="1_io7tx"]
 [ext_resource type="FontFile" uid="uid://dg0kdb1patb8t" path="res://fonts/Ubuntu_Mono/UbuntuMono-Regular.ttf" id="2_qauyc"]
+[ext_resource type="PackedScene" uid="uid://5p1h4vl48riq" path="res://input_controller.tscn" id="3_l8v81"]
 [ext_resource type="FontFile" uid="uid://b06ipbcnjy6e6" path="res://fonts/Ubuntu_Mono/UbuntuMono-BoldItalic.ttf" id="3_u7trg"]
+[ext_resource type="CodeHighlighter" uid="uid://dy3rfech68pn2" path="res://codehighlighting.tres" id="4_jnlp7"]
 [ext_resource type="FontFile" uid="uid://bq4u243g71xud" path="res://fonts/Ubuntu_Mono/UbuntuMono-Bold.ttf" id="4_r8om0"]
 
 [sub_resource type="Theme" id="Theme_a5er8"]
 default_font = ExtResource("2_qauyc")
 default_font_size = 18
-
-[sub_resource type="CodeHighlighter" id="CodeHighlighter_2y6u1"]
-number_color = Color(0.517647, 0, 0, 1)
-symbol_color = Color(0, 0.509804, 0, 1)
-function_color = Color(0, 0, 0.458824, 1)
-member_variable_color = Color(1, 0, 1, 1)
-keyword_colors = {
-"include": Color(1, 1, 0, 1)
-}
 
 [sub_resource type="LabelSettings" id="LabelSettings_ybxfr"]
 font = ExtResource("4_r8om0")
@@ -32,6 +25,8 @@ grow_vertical = 2
 theme = SubResource("Theme_a5er8")
 script = ExtResource("1_io7tx")
 
+[node name="InputController" parent="." instance=ExtResource("3_l8v81")]
+
 [node name="BoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 1
 anchors_preset = 15
@@ -40,11 +35,11 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="BoxContainer"]
+[node name="TopContainer" type="HBoxContainer" parent="BoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="RichTextLabel" type="RichTextLabel" parent="BoxContainer/HBoxContainer"]
+[node name="RichTextLabel" type="RichTextLabel" parent="BoxContainer/TopContainer"]
 custom_minimum_size = Vector2(0, 20)
 layout_direction = 1
 layout_mode = 2
@@ -58,15 +53,22 @@ fit_content = true
 scroll_active = false
 shortcut_keys_enabled = false
 
-[node name="Close" type="Button" parent="BoxContainer/HBoxContainer"]
+[node name="Close" type="Button" parent="BoxContainer/TopContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "X"
 
-[node name="CodeEdit" type="CodeEdit" parent="BoxContainer"]
+[node name="SplitContainer" type="SplitContainer" parent="BoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
-size_flags_stretch_ratio = 20.0
+size_flags_stretch_ratio = 35.3
+split_offset = 100
+drag_area_highlight_in_editor = true
+
+[node name="CodeEdit" type="CodeEdit" parent="BoxContainer/SplitContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 context_menu_enabled = false
 shortcut_keys_enabled = false
 wrap_mode = 1
@@ -75,7 +77,7 @@ scroll_past_end_of_file = true
 minimap_draw = true
 caret_draw_when_editable_disabled = true
 caret_mid_grapheme = true
-syntax_highlighter = SubResource("CodeHighlighter_2y6u1")
+syntax_highlighter = ExtResource("4_jnlp7")
 highlight_all_occurrences = true
 highlight_current_line = true
 gutters_draw_breakpoints_gutter = true
@@ -89,6 +91,12 @@ indent_use_spaces = true
 indent_automatic = true
 auto_brace_completion_enabled = true
 auto_brace_completion_highlight_matching = true
+
+[node name="ConsoleLabel" type="Label" parent="BoxContainer/SplitContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "DEBUG"
 
 [node name="FileDialog" type="FileDialog" parent="."]
 title = "Open a File"
@@ -150,7 +158,7 @@ size_flags_horizontal = 4
 size_flags_vertical = 8
 text = "Don't see this on startup"
 
-[connection signal="pressed" from="BoxContainer/HBoxContainer/Close" to="." method="_on_close_pressed"]
+[connection signal="pressed" from="BoxContainer/TopContainer/Close" to="." method="_on_close_pressed"]
 [connection signal="file_selected" from="FileDialog" to="." method="_on_file_dialog_file_selected"]
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
 [connection signal="toggled" from="CanvasLayer/ShortcutPanel/MarginContainer/ShortcutShow" to="." method="_on_shortcut_default_show_toggled"]
